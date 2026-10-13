@@ -7,7 +7,7 @@
 
 | 항목 | 결정 | 비고 |
 |------|------|------|
-| 로컬 개발 환경 | Docker Compose (MySQL + Redis + Kafka + 각 서비스) | docker-compose.yml은 TODO |
+| 로컬 개발 환경 | Docker Compose | 1차로 MySQL만 구성(`docker-compose.yml`). 컨테이너 1개 + 서비스별 스키마 분리(`ssgdeal_{service}`), Redis·Kafka는 추후 추가 |
 | IaC 도구 | Terraform | `infra/modules/` + `infra/envs/{env}/` |
 | 운영 컴퓨팅 런타임 | AWS ECS (Fargate) | 서버 패치·용량 관리 없이 운영. 실제 운영 배포 시점은 미정(로컬 Docker Compose로만 검증할 수도 있음) |
 | 환경 분리 | `local` / `prod` + 필요 시 생성하는 `loadtest` | `dev`/`staging` 같은 상시 환경은 두지 않음 |

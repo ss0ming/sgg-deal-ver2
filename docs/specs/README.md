@@ -22,8 +22,6 @@ docs/specs/
 
 ## 현재 스펙
 
-<!-- TODO: 기능 개발을 시작하면 아래 표에 스펙을 추가하세요. -->
-
 | Spec | 기능 |
 |------|------|
-| _(아직 없음)_ | |
+| [000-database-schema](000-database-schema/) | 서비스별(auth/user/cart/promotion/order/payment/notification) 초기 DB 스키마 |

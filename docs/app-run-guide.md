@@ -34,13 +34,24 @@ SSG-DEAL은 Gradle 멀티모듈로 구성된 Kotlin/Spring Boot MSA입니다. �
 
 > 현재 각 서비스는 독립적으로 기동만 되는 뼈대 상태입니다. MySQL·Redis·Kafka 연동, Gateway 라우팅 대상 서비스 실제 호출 등은 기능 구현에 따라 추가됩니다.
 
-## 3. 전체 스택 실행 (TODO)
+## 3. DB 띄우기 (Docker Compose)
 
-MySQL + Redis + Kafka + 전체 서비스를 한 번에 띄우는 `docker-compose.yml`은 아직 작성되지 않았습니다. 기능 구현과 함께 추가하고, 여기에 실행 명령을 채워 넣으세요.
+MySQL 컨테이너 1개로 서비스별 스키마(`ssgdeal_auth`, `ssgdeal_user`, `ssgdeal_cart`, `ssgdeal_promotion`, `ssgdeal_order`, `ssgdeal_payment`, `ssgdeal_notification`)와 서비스 전용 유저가 한 번에 만들어집니다(초기화 스크립트: `docker/mysql/init/`, 테이블 DDL: [000-database-schema](specs/000-database-schema/database.md)).
 
 ```bash
-# TODO: docker compose up -d
+cp .env.example .env   # 최초 1회
+docker compose up -d --wait
 ```
+
+확인:
+
+```bash
+docker exec ssgdeal-mysql mysql -uroot -proot -e "SHOW DATABASES LIKE 'ssgdeal_%';"
+```
+
+각 서비스는 `{service}_app` 전용 유저로 자기 스키마에만 접속합니다(예: `order_service` → `order_app`/`ssgdeal_order`). 접속 정보는 서비스별 `application.yml`에 설정합니다(아직 미설정 — Flyway 마이그레이션과 함께 추가 예정, [000-database-schema](specs/000-database-schema/implementation.md) 참고).
+
+Redis·Kafka는 아직 compose에 없습니다. 필요해지는 시점(캐시/분산 락, 이벤트 발행 기능 구현)에 `docker-compose.yml`에 추가합니다.
 
 ## 4. API 문서 확인 (TODO)
 
